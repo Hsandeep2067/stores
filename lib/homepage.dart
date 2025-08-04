@@ -92,14 +92,14 @@ class _HomePageState extends State<HomePage> {
                             title: Text('Email'),
                             subtitle: Text(_user!.email ?? 'No email'),
                           ),
-                          ListTile(
-                            leading: Icon(
-                              Icons.verified_user,
-                              color: Colors.blue,
-                            ),
-                            title: Text('Email Verified'),
-                            subtitle: Text(_user!.emailVerified ? 'Yes' : 'No'),
-                          ),
+                          // ListTile(
+                          //   leading: Icon(
+                          //     Icons.verified_user,
+                          //     color: Colors.blue,
+                          //   ),
+                          //   title: Text('Email Verified'),
+                          //   subtitle: Text(_user!.emailVerified ? 'Yes' : 'No'),
+                          // ),
                           ListTile(
                             leading: Icon(
                               Icons.access_time,
@@ -133,20 +133,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                 SizedBox(height: 10),
                 _BorrowingsSection(),
-                SizedBox(height: 30),
-                ElevatedButton.icon(
-                  onPressed: _logout,
-                  icon: Icon(Icons.logout),
-                  label: Text('Logout'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -493,13 +479,6 @@ class __BorrowingsSectionState extends State<_BorrowingsSection> {
         double returnedAmount = borrowings
             .where((borrowing) => borrowing.returned)
             .fold(0.0, (sum, borrowing) => sum + borrowing.amount);
-        int totalBorrowings = borrowings.length;
-        int pendingBorrowings = borrowings
-            .where((borrowing) => !borrowing.returned)
-            .length;
-        int returnedBorrowings = borrowings
-            .where((borrowing) => borrowing.returned)
-            .length;
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -563,37 +542,6 @@ class __BorrowingsSectionState extends State<_BorrowingsSection> {
                             color: Colors.green,
                           ),
                         ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: _SummaryItem(
-                            icon: Icons.list_alt,
-                            title: 'Total Items',
-                            value: '$totalBorrowings',
-                            color: Colors.purple,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 12),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _SummaryItem(
-                            icon: Icons.pending_actions,
-                            title: 'Pending Items',
-                            value: '$pendingBorrowings',
-                            color: Colors.orange,
-                          ),
-                        ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: _SummaryItem(
-                            icon: Icons.done_all,
-                            title: 'Returned Items',
-                            value: '$returnedBorrowings',
-                            color: Colors.green,
-                          ),
-                        ),
                       ],
                     ),
                   ],
@@ -601,6 +549,21 @@ class __BorrowingsSectionState extends State<_BorrowingsSection> {
               ),
             ),
             SizedBox(height: 20),
+            // Add Borrowing Button
+            ElevatedButton.icon(
+              onPressed: _showAddBorrowingDialog,
+              icon: Icon(Icons.add),
+              label: Text('Add Borrowing'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              ),
+            ),
+            SizedBox(height: 16),
             // Borrowings List
             ...borrowings.map(
               (borrowing) => Card(
@@ -692,20 +655,6 @@ class __BorrowingsSectionState extends State<_BorrowingsSection> {
                   ),
                   onTap: () => _toggleReturned(borrowing),
                 ),
-              ),
-            ),
-            SizedBox(height: 16),
-            ElevatedButton.icon(
-              onPressed: _showAddBorrowingDialog,
-              icon: Icon(Icons.add),
-              label: Text('Add Borrowing'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
             ),
           ],
